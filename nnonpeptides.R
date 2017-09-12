@@ -1,8 +1,9 @@
 # To read arff files
 library(foreign)
+library(caret) 
 features <- read.arff("peptide_data (2).arff")
 
-k <- 10
+k <- 3
 for(i in 1:k){
   # Spliting in train and test data
   indexes = sample(1:nrow(features), size=0.2*nrow(features))
@@ -24,6 +25,7 @@ for(i in 1:k){
   test <- test[-31]
   
   dist <- print(as.data.frame(table(test$positive)))
+  nnlog <- data.frame(matrix(0, ncol = k, nrow = 1))
   tryCatch({
     nn <- neuralnet(positive + negative ~ 
                       Tiny + Small + Aliphatic + Aromatic + NonPolar + Polar + Charged + 
@@ -36,8 +38,8 @@ for(i in 1:k){
                     data=train, 
                     hidden=c(3,2))
   },
-  error = function(e){nn3results[1,nnloop] <- -1},
-  warning = function(w){nn3results[1,nnloop] <- -1}, 
+  error = function(e){nnlog[1,k] <- -1},
+  warning = function(w){nnlog[1,k] <- -1}, 
   finally={
     # plot(nn)
     mypredict <- compute(nn, test[-31:-32])$net.result
@@ -45,7 +47,9 @@ for(i in 1:k){
       return(which(arr == max(arr)))
     }
     idx <- apply(mypredict, c(1), maxidx)
-    prediction <- c('positive', 'negative')[idx]
+    prediction <- c('TRUE', 'FALSE')[idx]
     cm <- print(table(prediction, test$positive))
   })
 }
+
+confusionMatrix(cm)
