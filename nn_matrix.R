@@ -36,5 +36,11 @@ maxidx <- function(arr) {
 }
 idx <- apply(mypredict, c(1), maxidx)
 prediction <- c('0', '1')[idx]
-cm <- print(table(prediction, test_matrix[,211]))
+cm <- table(prediction, test_matrix[,211])
 print(confusionMatrix(cm))
+
+
+# Visualization -----------------------------------------------------------
+
+plot(nnnew,show.weights = F,intercept = F)
+
