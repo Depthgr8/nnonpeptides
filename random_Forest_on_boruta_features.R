@@ -27,14 +27,15 @@ k <- 1
 nnlog <- matrix(0,k)
 for (i in 1:k){
   cat("iteration",i)
-  for(j in 1:4)
+  for(j in 1:10)
   {
     forest <- randomForest(output ~., data = features,ntree=1000, mtry=range[j])
     out_range[j] <- unname(confusionMatrix(as.table(forest$confusion[,-3]))$overall[1])
-    cat("mtry",range[j])
+    cat("mtry",range[j],"\n")
   }
   # print(forest)
   # print(importance(forest,type = 2))
   nnlog[i] <- unname(confusionMatrix(as.table(forest$confusion[,-3]))$overall[1])
 }
 cat("Accuracy after ",k,"cross validation is :",sum(nnlog)/k*100,"%")
+out_range
