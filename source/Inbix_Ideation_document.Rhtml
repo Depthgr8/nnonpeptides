@@ -1,0 +1,98 @@
+<html>
+  <head>
+    <title>Inbix-2017 ideation challenge</title>
+  </head>
+  <body>
+    <h1>INBIX-2017 ideation challenge report</h1>
+    <h2>R Libraries used</h2>
+      <p>
+      <b>randomForest</b>
+      Description Classification and regression based on a forest of trees
+      using random inputs.
+      </p>
+      <p>
+      <b>Biomedr</b>
+      Description The BioMedR package offers an R/Bioconductor package
+      generating various molecular representations for chemicals,
+      proteins, DNAs/RNAs and their interactions.
+      </p>
+      <p>
+      <b>boruta</b>
+      Description An all relevant feature selection wrapper algorithm.
+      It finds relevant features by comparing original attributes'
+      importance with importance achievable at random, estimated
+      using their permuted copies.
+      </p>
+      <p>
+      <b>caret</b>
+      Description Misc functions for training and plotting classification and
+      regression models.
+      </p>
+      <p>
+      <b>foreign</b>
+      Description Reading and writing data stored by some versions of
+      'Epi Info', 'Minitab', 'S', 'SAS', 'SPSS', 'Stata', 'Systat', 'Weka',
+      and for reading and writing some 'dBase' files.
+      </p>
+      <p>
+      <b>knitr</b>
+      Description Provides a general-purpose tool for dynamic report generation in R
+      using Literate Programming techniques.
+      </p>
+      <p>
+      <b>neuralnet</b>
+      Description Training of neural networks using backpropagation,
+      resilient backpropagation with (Riedmiller, 1994) or without
+      weight backtracking (Riedmiller and Braun, 1993) or the
+      modified globally convergent version by Anastasiadis et al.
+      (2005). The package allows flexible settings through
+      custom-choice of error and activation function. Furthermore,
+      the calculation of generalized weights (Intrator O & Intrator
+      N, 1993) is implemented.
+      </p>
+      <p>
+      <b>nnet</b>
+      Description Software for feed-forward neural networks with a single
+      hidden layer, and for multinomial log-linear models.
+      </p>
+    <h2>A snapshot of raw data</h2>
+    <p>
+<!--begin.rcode
+install.packages("randomForest")
+install.packages("foreign")
+install.packages("caret")
+library(randomForest)
+library(foreign)
+library(caret)
+end.rcode-->
+    <h3>Feature engineering on raw data</h3>
+    <p>Algorithm</p>
+    
+    <h3>Features selection of <b>important</b> features</h3>
+    <p>Algorithm</p>
+    
+    <h3>Selecting random indices for training dataset</h3>
+    <p>40 % of data is used as training data</p>
+<!--begin.rcode
+features <- read.arff("boruta_selected_features.arff")
+features <- features[sample(nrow(features)),]
+indexes = sample(1:nrow(features), size=0.4*nrow(features))
+test = features[indexes,]
+train = features[-indexes,]
+
+cat("No of missing values : ",sum(is.na(features)),"\n")
+cat("No. of variables : ",ncol(features),"\n")
+cat("Training cases : ",nrow(train),"\n")
+cat("Test cases : ",nrow(test),"\n") 
+end.rcode-->
+
+
+    <h3>Feature engineering on raw data</h3>
+    <p>Algorithm</p>
+<!--begin.rcode
+attach(features)
+forest <- randomForest(output ~., data = features,ntree=1000, mtry=range[j])
+end.rcode-->
+
+  </body>
+</html>

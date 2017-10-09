@@ -1,0 +1,227 @@
+<html>
+  <head>
+<style type="text/css">
+.knitr .inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage .left {
+  text-align: left;
+}
+.rimage .right {
+  text-align: right;
+}
+.rimage .center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+    <title>Inbix-2017 ideation challenge</title>
+  </head>
+  <body>
+    <h1>INBIX-2017 ideation challenge report</h1>
+    <h2>R Libraries used</h2>
+      <p>
+      <b>randomForest</b>
+      Description Classification and regression based on a forest of trees
+      using random inputs.
+      </p>
+      <p>
+      <b>Biomedr</b>
+      Description The BioMedR package offers an R/Bioconductor package
+      generating various molecular representations for chemicals,
+      proteins, DNAs/RNAs and their interactions.
+      </p>
+      <p>
+      <b>boruta</b>
+      Description An all relevant feature selection wrapper algorithm.
+      It finds relevant features by comparing original attributes'
+      importance with importance achievable at random, estimated
+      using their permuted copies.
+      </p>
+      <p>
+      <b>caret</b>
+      Description Misc functions for training and plotting classification and
+      regression models.
+      </p>
+      <p>
+      <b>foreign</b>
+      Description Reading and writing data stored by some versions of
+      'Epi Info', 'Minitab', 'S', 'SAS', 'SPSS', 'Stata', 'Systat', 'Weka',
+      and for reading and writing some 'dBase' files.
+      </p>
+      <p>
+      <b>knitr</b>
+      Description Provides a general-purpose tool for dynamic report generation in R
+      using Literate Programming techniques.
+      </p>
+      <p>
+      <b>neuralnet</b>
+      Description Training of neural networks using backpropagation,
+      resilient backpropagation with (Riedmiller, 1994) or without
+      weight backtracking (Riedmiller and Braun, 1993) or the
+      modified globally convergent version by Anastasiadis et al.
+      (2005). The package allows flexible settings through
+      custom-choice of error and activation function. Furthermore,
+      the calculation of generalized weights (Intrator O & Intrator
+      N, 1993) is implemented.
+      </p>
+      <p>
+      <b>nnet</b>
+      Description Software for feed-forward neural networks with a single
+      hidden layer, and for multinomial log-linear models.
+      </p>
+    <h2>A snapshot of raw data</h2>
+    <p>
+<div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">install.packages</span><span class="hl std">(</span><span class="hl str">&quot;randomForest&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="message"><pre class="knitr r">## Installing package into '/home/depthgr8/R/x86_64-pc-linux-gnu-library/3.3'
+## (as 'lib' is unspecified)
+</pre></div>
+<div class="error"><pre class="knitr r">## Error in contrib.url(repos, type): trying to use CRAN without setting a mirror
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">install.packages</span><span class="hl std">(</span><span class="hl str">&quot;foreign&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="message"><pre class="knitr r">## Installing package into '/home/depthgr8/R/x86_64-pc-linux-gnu-library/3.3'
+## (as 'lib' is unspecified)
+</pre></div>
+<div class="error"><pre class="knitr r">## Error in contrib.url(repos, type): trying to use CRAN without setting a mirror
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">install.packages</span><span class="hl std">(</span><span class="hl str">&quot;caret&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="message"><pre class="knitr r">## Installing package into '/home/depthgr8/R/x86_64-pc-linux-gnu-library/3.3'
+## (as 'lib' is unspecified)
+</pre></div>
+<div class="error"><pre class="knitr r">## Error in contrib.url(repos, type): trying to use CRAN without setting a mirror
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(randomForest)</span>
+</pre></div>
+<div class="message"><pre class="knitr r">## randomForest 4.6-12
+</pre></div>
+<div class="message"><pre class="knitr r">## Type rfNews() to see new features/changes/bug fixes.
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(foreign)</span>
+<span class="hl kwd">library</span><span class="hl std">(caret)</span>
+</pre></div>
+<div class="message"><pre class="knitr r">## Loading required package: lattice
+</pre></div>
+<div class="message"><pre class="knitr r">## Loading required package: ggplot2
+</pre></div>
+<div class="message"><pre class="knitr r">## 
+## Attaching package: 'ggplot2'
+</pre></div>
+<div class="message"><pre class="knitr r">## The following object is masked from 'package:randomForest':
+## 
+##     margin
+</pre></div>
+</div></div>
+    <h3>Feature engineering on raw data</h3>
+    <p>Algorithm</p>
+    
+    <h3>Features selection of <b>important</b> features</h3>
+    <p>Algorithm</p>
+    
+    <h3>Selecting random indices for training dataset</h3>
+    <p>40 % of data is used as training data</p>
+<div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">features</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">read.arff</span><span class="hl std">(</span><span class="hl str">&quot;boruta_selected_features.arff&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="warning"><pre class="knitr r">## Warning in file(file, &quot;r&quot;): cannot open file
+## 'boruta_selected_features.arff': No such file or directory
+</pre></div>
+<div class="error"><pre class="knitr r">## Error in file(file, &quot;r&quot;): cannot open the connection
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">features</span> <span class="hl kwb">&lt;-</span> <span class="hl std">features[</span><span class="hl kwd">sample</span><span class="hl std">(</span><span class="hl kwd">nrow</span><span class="hl std">(features)),]</span>
+</pre></div>
+<div class="error"><pre class="knitr r">## Error in eval(expr, envir, enclos): object 'features' not found
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">indexes</span> <span class="hl kwb">=</span> <span class="hl kwd">sample</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl kwd">nrow</span><span class="hl std">(features),</span> <span class="hl kwc">size</span><span class="hl std">=</span><span class="hl num">0.4</span><span class="hl opt">*</span><span class="hl kwd">nrow</span><span class="hl std">(features))</span>
+</pre></div>
+<div class="error"><pre class="knitr r">## Error in nrow(features): object 'features' not found
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">test</span> <span class="hl kwb">=</span> <span class="hl std">features[indexes,]</span>
+</pre></div>
+<div class="error"><pre class="knitr r">## Error in eval(expr, envir, enclos): object 'features' not found
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">train</span> <span class="hl kwb">=</span> <span class="hl std">features[</span><span class="hl opt">-</span><span class="hl std">indexes,]</span>
+</pre></div>
+<div class="error"><pre class="knitr r">## Error in eval(expr, envir, enclos): object 'features' not found
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;No of missing values : &quot;</span><span class="hl std">,</span><span class="hl kwd">sum</span><span class="hl std">(</span><span class="hl kwd">is.na</span><span class="hl std">(features)),</span><span class="hl str">&quot;\n&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="error"><pre class="knitr r">## Error in cat(&quot;No of missing values : &quot;, sum(is.na(features)), &quot;\n&quot;): object 'features' not found
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;No. of variables : &quot;</span><span class="hl std">,</span><span class="hl kwd">ncol</span><span class="hl std">(features),</span><span class="hl str">&quot;\n&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="error"><pre class="knitr r">## Error in ncol(features): object 'features' not found
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;Training cases : &quot;</span><span class="hl std">,</span><span class="hl kwd">nrow</span><span class="hl std">(train),</span><span class="hl str">&quot;\n&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## Training cases :
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;Test cases : &quot;</span><span class="hl std">,</span><span class="hl kwd">nrow</span><span class="hl std">(test),</span><span class="hl str">&quot;\n&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="error"><pre class="knitr r">## Error in nrow(test): object 'test' not found
+</pre></div>
+</div></div>
+
+
+    <h3>Feature engineering on raw data</h3>
+    <p>Algorithm</p>
+<div class="chunk" id="unnamed-chunk-3"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">attach</span><span class="hl std">(features)</span>
+</pre></div>
+<div class="error"><pre class="knitr r">## Error in attach(features): object 'features' not found
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">forest</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">randomForest</span><span class="hl std">(output</span> <span class="hl opt">~</span><span class="hl std">.,</span> <span class="hl kwc">data</span> <span class="hl std">= features,</span><span class="hl kwc">ntree</span><span class="hl std">=</span><span class="hl num">1000</span><span class="hl std">,</span> <span class="hl kwc">mtry</span><span class="hl std">=range[j])</span>
+</pre></div>
+<div class="error"><pre class="knitr r">## Error in eval(expr, envir, enclos): object 'features' not found
+</pre></div>
+</div></div>
+
+  </body>
+</html>
