@@ -20,9 +20,13 @@ library(caret)
 # Parameter configuration -------------------------------------------------
 
 k <- 5                    # K-cross validation
-nt <- 10                  # Number of trees
+nt <- 3000                # Number of trees
 mt <- 656                 # Number of mtry
 mn <- 100                 # Maximum no. of nodes
+ss <- c(350,150)          # Sample sizes 
+cwt <- c(0.385,0.614)     # Class weights
+oobt <- 1000              # Out of bag times
+ns <- 2                   # Node size
 
 # Import and data processing ----------------------------------------------
 
@@ -35,7 +39,7 @@ train = features[-indexes,] # Training data
 # Data summary ------------------------------------------------------------
 
 cat("No of missing values : ",sum(is.na(features)),"\n")
-cat("No. of variables : ",ncol(features),"\n")
+cat("No. of variables : ",vars <- ncol(features),"\n")
 cat("Training cases : ",nrow(train),"\n")
 cat("Test cases : ",nrow(test),"\n") 
 cat("Positive cases :",sum(features[,657]==1),"\n")
@@ -47,9 +51,9 @@ cat("Negative cases :",sum(features[,657]==0),"\n")
 
 tr_forest <- randomForest(output ~., data = train,
           ntree=nt, mtry=mt,importance=TRUE, proximity=TRUE,
-          maxnodes=mn,sampsize=c(350,150),classwt=c(0.385,0.614),
-          keep.forest=TRUE,oob.prox=TRUE,oob.times= 1000,
-          replace=TRUE,nodesize=2, do.trace=1
+          maxnodes=mn,sampsize=ss,classwt=cwt,
+          keep.forest=TRUE,oob.prox=TRUE,oob.times= oobt,
+          replace=TRUE,nodesize=ns, do.trace=1
           )
 tra <- unname(confusionMatrix(as.table(tr_forest$confusion[,-3]))$overall[1])
 cat("Training accuracy is :",tra,"\n")
@@ -58,11 +62,11 @@ cat("Training accuracy is :",tra,"\n")
 # Test case accuracy ------------------------------------------------------
 
 ts_forest <- randomForest(output ~.,
-          data = train, xtest=test[,-657], ytest=test[,657],
+          data = train, xtest=test[,-vars], ytest=test[,vars],
           ntree=nt, mtry=mt,importance=TRUE, proximity=TRUE,
-          maxnodes=mn,sampsize=c(350,150),classwt=c(0.385,0.614),
-          keep.forest=TRUE,oob.prox=TRUE,oob.times= 1000,
-          replace=TRUE,nodesize=2, do.trace=1
+          maxnodes=mn,sampsize=ss,classwt=cwt,
+          keep.forest=TRUE,oob.prox=TRUE,oob.times= oobt,
+          replace=TRUE,nodesize=ns, do.trace=1
           )
 tsa <- unname(confusionMatrix(as.table(ts_forest$confusion[,-3]))$overall[1])
 cat("Testing case accuracy is :",tsa,"\n")
@@ -80,11 +84,11 @@ for(i in 1:k){
   train <- data[-indices,]
   cat("Running ",i,"/",k,"fold\n")
   cv_forest <- randomForest(output ~.,
-              data = train, xtest=test[,-657], ytest=test[,657],
+              data = train, xtest=test[,-vars], ytest=test[,vars],
               ntree=nt, mtry=mt,importance=TRUE, proximity=TRUE,
-              maxnodes=mn,sampsize=c(350,150),classwt=c(0.385,0.614),
-              keep.forest=TRUE,oob.prox=TRUE,oob.times= 1000,
-              replace=TRUE,nodesize=2, do.trace=1
+              maxnodes=mn,sampsize=ss,classwt=cwt,
+              keep.forest=TRUE,oob.prox=TRUE,oob.times= oobt,
+              replace=TRUE,nodesize=ns, do.trace=1
               )
   accur_log[i] <- unname(confusionMatrix(as.table(cv_forest$confusion[,-3]))$overall[1])
   Sys.sleep(1)
