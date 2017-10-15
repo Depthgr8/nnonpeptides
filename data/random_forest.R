@@ -20,10 +20,10 @@ library(caret)
 # Parameter configuration -------------------------------------------------
 
 k <- 5                    # K-cross validation
-nt <- 3000                # Number of trees
+nt <- 3000               # Number of trees
 mt <- 656                 # Number of mtry
-mn <- 100                 # Maximum no. of nodes
-ss <- c(350,150)          # Sample sizes 
+mn <- 450                 # Maximum no. of nodes
+ss <- c(300,300)          # Sample sizes 
 cwt <- c(0.385,0.614)     # Class weights
 oobt <- 1000              # Out of bag times
 ns <- 2                   # Node size
@@ -35,6 +35,7 @@ features <- features[sample(nrow(features)),]   # Shuffling of data records
 indexes = sample(1:nrow(features), size=1/k*nrow(features)) # Indices
 test = features[indexes,]   # Test data
 train = features[-indexes,] # Training data
+attach(features)
 
 # Data summary ------------------------------------------------------------
 
